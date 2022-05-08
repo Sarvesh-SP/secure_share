@@ -9,11 +9,13 @@ app.use(cors());
 
 app.use(express.json());
 
+//Db Connect
 require("./src/config/test_db");
 
-app.get("/", (req, res) => {
-	res.send("Getting started");
-});
+const userRouter = require("./src/routes/userRoute");
+
+//Routingusers
+app.use("/api/users", userRouter);
 
 app.listen(port, () => {
 	console.log(`Connected to http://localhost:${port}`);
