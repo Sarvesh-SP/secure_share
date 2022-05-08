@@ -6,9 +6,9 @@ const createUser = async (req, res) => {
 	}
 
 	try {
-		const { user, token } = await userService.create(req.body);
+		const response = await userService.create(req.body);
 
-		return res.status(201).json({ user, token });
+		return res.status(201).json(response);
 	} catch (err) {
 		return res.status(400).json({ message: err.message });
 	}
@@ -16,14 +16,22 @@ const createUser = async (req, res) => {
 
 const login = async (req, res) => {
 	try {
-		const { user, token } = await userService.signIn(req.body);
+		const response = await userService.signIn(req.body);
 
-		res.json({
-			user,
-			token,
-		});
+		return res.json(response);
 	} catch (err) {
 		return res.status(400).json(err);
+	}
+};
+
+const profile = async (req, res) => {
+	try {
+		const response = await userService.readProfile(req.user);
+
+		return res.json({ data: response });
+		return res.json(req.user);
+	} catch (err) {
+		return res.status(400).json(err.message);
 	}
 };
 
@@ -36,4 +44,4 @@ const logout = async (req, res) => {
 	}
 };
 
-module.exports = { login, logout, createUser };
+module.exports = { login, logout, createUser, profile };
