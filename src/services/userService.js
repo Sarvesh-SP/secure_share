@@ -89,4 +89,10 @@ const deleteToken = async (token) => {
 	};
 };
 
-module.exports = { create, validateToken, readProfile, deleteToken, signIn };
+module.exports = {
+	create,
+	validateToken,
+	readProfile,
+	deleteToken,
+	signIn,
+};
