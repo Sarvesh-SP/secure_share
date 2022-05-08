@@ -6,8 +6,15 @@ const fileSchema = new mongoose.Schema(
 		path: { type: String, required: true },
 		size: { type: Number, required: true },
 		uuid: { type: String, required: true },
-		sender: { type: String, required: false },
-		receiver: { type: String, required: false },
+		key: {
+			type: String,
+		},
+		// sender: { type: String, required: false },
+		// receiver: { type: String, required: false },
+		encryptPath: {
+			type: String,
+			required: false,
+		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
