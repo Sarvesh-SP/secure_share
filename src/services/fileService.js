@@ -1,10 +1,21 @@
 const File = require("../models/fileModel");
+const algoService = require("../services/encDecService");
 const fileUtil = require("../utils/fileUtil");
+const sendMail = require("../services/emailService");
+const { randomKeyGen } = require("../utils/commonUtils");
 const { v4: uuidv4 } = require("uuid");
-const p = require("path");
 
-const create = async (body, id) => {
+const create = async (body, id, email) => {
 	const { path, size, filename } = body;
+	const encryptPath = "encrypts\\" + filename;
+	const key = randomKeyGen();
+	console.log("key: ", key);
+
+	algoService.encryptFile(
+		fileUtil.downloadLink(path),
+		fileUtil.downloadLink(encryptPath),
+		key
+	);
 
 	// console.log(p.resolve(path), p.resolve(__dirname + "../../../encrypts"));
 	//path = uploads\Sarvesh SP-4MW18CS068.pdf
@@ -12,11 +23,27 @@ const create = async (body, id) => {
 	const file = new File({
 		filename,
 		path,
+		encryptPath,
 		size,
-		key: "laskfj;lasdjf",
+		key,
 		uuid: uuidv4(),
 		size,
 		user: id,
+	});
+	const from = "sarvesh.sp2013@gmail.com";
+	const to = email;
+
+	sendMail({
+		from,
+		to,
+		subject: "Cloud Share Key",
+		text: `The key for ${filename} has been shared with you.`,
+		html: require("../utils/emailUtil")({
+			emailFrom: from,
+			secret_key: key,
+			size: parseInt(file.size / 1000) + "KB",
+			expires: "24 hours",
+		}),
 	});
 
 	const result = await file.save();
@@ -28,12 +55,11 @@ const create = async (body, id) => {
 	}
 
 	return {
-		fileLink: fileUtil.linkGen(result.uuid),
 		data: result,
 	};
 };
 
-const download = async (id, key) => {
+const mediate = async (id, key) => {
 	const file = await File.findOne({ uuid: id });
 
 	if (!fileUtil.check(file)) {
@@ -42,17 +68,34 @@ const download = async (id, key) => {
 		};
 	}
 
-	let filePath = "";
+	const fileLink = fileUtil.linkGen(file.uuid, key);
 
+	return {
+		fileLink,
+		name: file.filename,
+		size: file.size,
+	};
+};
+
+const download = async (id, key) => {
+	const file = await File.findOne({ uuid: id });
+	if (!file) {
+		throw {
+			message: "file not found!",
+		};
+	}
+	let filePath = "";
 	if (key === file.key) {
+		console.log("decrypt file sent");
+		filePath = fileUtil.downloadLink(file.path);
+	} else {
+		console.log("encrypt file sent");
 		filePath = fileUtil.downloadLink(file.encryptPath);
 	}
-
-	filePath = fileUtil.downloadLink(file.path);
 
 	return {
 		filePath,
 	};
 };
 
-module.exports = { create, download };
+module.exports = { create, mediate, download };

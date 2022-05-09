@@ -27,15 +27,13 @@ const signIn = async (body) => {
 	const user = await User.findOne({ email });
 
 	if (!userUtil.check(user)) {
-		throw {
-			message: "User does'nt exist",
-		};
+		throw Error("Incorrect email");
 	}
 
 	const isMatch = await bcrypt.compare(password, user.password);
 
 	if (!isMatch) {
-		throw { message: "Wrong Password" };
+		throw Error("Incorrect password");
 	}
 
 	const token = await user.genAuth();
@@ -45,7 +43,8 @@ const signIn = async (body) => {
 	};
 };
 
-const readProfile = async (user) => {
+const readProfile = async (id) => {
+	const user = await User.findById(id);
 	if (!userUtil.check(user)) {
 		throw {
 			message: "User Does'nt exist",
@@ -66,6 +65,7 @@ const validateToken = async (token) => {
 			$in: [token],
 		},
 	});
+	console.log(user);
 
 	return user;
 };
@@ -92,7 +92,7 @@ const deleteToken = async (token) => {
 module.exports = {
 	create,
 	validateToken,
-	readProfile,
 	deleteToken,
 	signIn,
+	readProfile,
 };

@@ -7,8 +7,8 @@ const check = (result) => {
 };
 
 //Render Download Page with a Key field
-const linkGen = (id) => {
-	return `${process.env.BASE_URL}/api/files/download/${id}`;
+const linkGen = (id, key) => {
+	return `${process.env.BASE_URL}/api/files/download/${id}?key=${key}`;
 	//Use this link to render download page
 };
 

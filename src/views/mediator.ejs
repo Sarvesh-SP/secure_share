@@ -1,0 +1,14 @@
+<%- include('partials/another'); -%>
+
+<header>
+	<div class="smoothie">
+		<img src="/cloud-computing.png" alt="" />
+	</div>
+	<div class="headings">
+		<h2><%= name %></h2>
+		<h3>File Size: <%=parseInt(size/1000)%> Kb</h3>
+		<a href="<%= fileLink%>" class="btn grn">Download</a>
+	</div>
+</header>
+
+<%- include('partials/footer'); -%>

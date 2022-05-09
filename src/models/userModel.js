@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
 const { createJWTToken } = require("../utils/createToken");
 
@@ -10,6 +11,9 @@ const userSchema = new mongoose.Schema(
 		email: {
 			type: String,
 			unique: true,
+			required: [true, "Please enter an email"],
+			lowercase: true,
+			validate: [isEmail, "Please enter a valid email"],
 		},
 		password: {
 			type: String,
@@ -33,6 +37,7 @@ userSchema.methods.genAuth = async function () {
 	const user = this;
 	const payload = {
 		id: user._id.toString(),
+		email: user.email,
 	};
 
 	const accessToken = createJWTToken(payload);

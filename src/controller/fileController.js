@@ -14,24 +14,39 @@ const createFile = async (req, res) => {
 		}
 
 		try {
-			const response = await fileService.create(req.file, req.userId.id);
-			return res.status(201).json(response);
+			const { id, email } = req.userId;
+			const response = await fileService.create(req.file, id, email);
+			return res.redirect("/complete");
 		} catch (err) {
 			return res.status(400).send({ error: err.message });
 		}
 	});
 };
 
-const downloadFile = async (req, res) => {
-	const { key } = req.body;
-	const { id } = req.params;
-
+const downLinkGen = async (req, res) => {
+	const { rod, key } = req.body;
+	const data = JSON.parse(rod);
 	try {
-		const response = await fileService.download(id, key);
-		res.download(response.filePath);
+		const { fileLink, name, size } = await fileService.mediate(
+			data.uuid,
+			key
+		);
+		res.render("mediator", { fileLink, name, size });
 	} catch (err) {
-		return res.status(400).send({ error: err.message });
+		return res.status(400).send(err.message);
 	}
 };
 
-module.exports = { createFile, downloadFile };
+const downloadFile = async (req, res) => {
+	const { id } = req.params;
+	const { key } = req.query;
+	try {
+		const response = await fileService.download(id, key);
+
+		res.download(response.filePath);
+	} catch (err) {
+		return res.status(400).send(err.message);
+	}
+};
+
+module.exports = { createFile, downLinkGen, downloadFile };

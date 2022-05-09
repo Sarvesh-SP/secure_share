@@ -1,0 +1,32 @@
+<%- include('partials/header'); -%>
+
+<header>
+	<div class="smoothie">
+		<img src="/smoothie.png" alt="" />
+	</div>
+	<% if(files.length !== 0) { %>
+	<div class="headings">
+		<form method="post" action="/api/files/linkGen">
+			<label for="fily">Select a file</label>
+			<select id="fily" name="rod">
+				<% for ( var i = 0; i < files.length; i++ ) { var fJson =
+				JSON.stringify(files[i])%>
+				<option value="<%=fJson %>"><%= files[i].filename%></option>
+				<% } %>
+			</select>
+			<label for="key">Key</label>
+			<input type="text" name="key" />
+			<button type="submit">Download</button>
+		</form>
+		<div class="yo"></div>
+	</div>
+	<% }else {%>
+	<div class="headings">
+		<form>
+			<label for="fily">No Files Uploaded yet..</label>
+		</form>
+	</div>
+	<%}%>
+</header>
+
+<%- include('partials/footer'); -%>
