@@ -1,17 +1,23 @@
 <%- include('partials/header'); -%>
 
 <header>
-	<h2>Upload File</h2>
-	<form
-		method="post"
-		action="/api/files/create"
-		enctype="multipart/form-data"
-	>
-		<label for="uploadF">Upload Your file...</label>
-		<input type="file" id="uploadF" name="fileboi" />
+	<div class="smoothie">
+		<img src="/poster.png" alt="" />
+	</div>
+	<div class="headings">
+		<h2>Upload File</h2>
+		<h4>Check the key in your email.</h4>
+		<form
+			method="post"
+			action="/api/files/create"
+			enctype="multipart/form-data"
+		>
+			<label for="uploadF">Upload Your file...</label>
+			<input type="file" id="uploadF" name="fileboi" />
 
-		<button type="submit" class="btn blu">Upload</button>
-	</form>
+			<button type="submit" class="btn blu">Upload</button>
+		</form>
+	</div>
 </header>
 
 <%- include('partials/footer'); -%>

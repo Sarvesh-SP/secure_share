@@ -30,7 +30,9 @@ const create = async (body, id, email) => {
 		size,
 		user: id,
 	});
-	const from = "sarvesh.sp2013@gmail.com";
+
+	//Sender Mail
+	const from = "sharecloud0@gmail.com";
 	const to = email;
 
 	sendMail({
