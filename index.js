@@ -5,7 +5,7 @@ require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
 
-const port = process.env.PORT | 3000;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -37,5 +37,5 @@ app.use("/api/files", fileRouter);
 app.use(viewRouter);
 
 app.listen(port, () => {
-	console.log(`Connected to http://localhost:${port}`);
+	console.log(`Server is running on port ${port}`);
 });
