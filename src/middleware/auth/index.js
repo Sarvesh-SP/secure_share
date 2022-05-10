@@ -85,7 +85,8 @@ const checkUser = (req, res, next) => {
 					next();
 				} catch (err) {
 					console.log(err.message);
-					res.redirect("/login");
+					res.cookie("jwt", "", { maxAge: 1 });
+					return res.redirect("/");
 				}
 			}
 		});

@@ -7,9 +7,9 @@ class connectDB {
 
 	_connect() {
 		mongoose
-			.connect(process.env.MONGO_URI, {
-				user: process.env.MONGO_USER,
-				pass: process.env.MONGO_PASS,
+			.connect(process.env.MONGO_URI2, {
+				user: process.env.MONGO_U2,
+				pass: process.env.MONGO_P2,
 				useNewUrlParser: true,
 				useUnifiedTopology: true,
 			})
