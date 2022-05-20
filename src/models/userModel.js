@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		role: {
+			type: String,
+			enum: ["user", "admin"],
+			default: "user",
+		},
 		tokens: {
 			type: Array,
 			default: [],
@@ -38,6 +43,7 @@ userSchema.methods.genAuth = async function () {
 	const payload = {
 		id: user._id.toString(),
 		email: user.email,
+		role: user.role,
 	};
 
 	const accessToken = createJWTToken(payload);

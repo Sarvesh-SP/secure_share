@@ -29,7 +29,7 @@ const login = async (req, res) => {
 		//cookie setup
 		res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
-		return res.status(201).json({ user: user._id });
+		return res.status(200).json({ user: user._id });
 	} catch (err) {
 		const errors = userUtil.handleErrors(err);
 		return res.status(400).json({ errors });

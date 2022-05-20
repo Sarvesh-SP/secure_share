@@ -27,13 +27,14 @@ require("./src/config/test_db");
 const userRouter = require("./src/routes/userRoute");
 const fileRouter = require("./src/routes/fileRoute");
 const viewRouter = require("./src/routes/viewRoute");
+const adminRouter = require("./src/routes/adminRoute");
 const { checkUser } = require("./src/middleware/auth");
 
 //Routing
 app.get("*", checkUser);
-app.get("/", (req, res) => res.render("home"));
 app.use("/api/users", userRouter);
 app.use("/api/files", fileRouter);
+app.use("/api/admin", adminRouter);
 app.use(viewRouter);
 
 app.listen(port, () => {
