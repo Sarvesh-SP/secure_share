@@ -55,13 +55,13 @@ const verifyToken = (req, res, next) => {
 				console.log(err.message);
 				res.redirect("/login");
 			} else {
-				console.log("decoded", decode);
 				req.userId = decode;
 				next();
 			}
 		});
 	} else {
-		res.redirect("/login");
+		res.cookie("jwt", "", { maxAge: 1 });
+		return res.redirect("/login");
 	}
 };
 
@@ -75,8 +75,6 @@ const checkUser = (req, res, next) => {
 				res.locals.user = null;
 				next();
 			} else {
-				console.log("decoded", decode);
-
 				try {
 					const { user, files } = await readProfile(decode.id);
 
@@ -84,9 +82,11 @@ const checkUser = (req, res, next) => {
 					res.locals.files = files;
 					next();
 				} catch (err) {
-					console.log(err.message);
 					res.cookie("jwt", "", { maxAge: 1 });
-					return res.redirect("/");
+					if (decode.role === "admin") {
+						return res.redirect("/admin/login");
+					}
+					return res.redirect("/login");
 				}
 			}
 		});

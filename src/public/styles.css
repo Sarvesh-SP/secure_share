@@ -156,3 +156,12 @@ footer {
 	margin-top: 120px;
 	color: #aaa;
 }
+/* :root[theme="light"] {
+	--font-color: #444;
+	--color-main: #fafafa;
+	--button-main: #fee996;
+	--color-blu: #39aea9;
+	--color-green: #95cd41;
+	--form-background: white;
+	--input-border: 1px solid #ddd;
+} */
