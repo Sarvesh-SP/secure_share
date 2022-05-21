@@ -4,27 +4,20 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ master ]
-  
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [master]
+
+    pull_request:
+        branches: [master]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Heroku Setup
-      uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "cloudy-share"
-        heroku_email: "sarvesh.sp2013@gmail.com"
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Heroku Setup
+              uses: akhileshns/heroku-deploy@v3.12.12
+              with:
+                  heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+                  heroku_app_name: "cloudy-share"
+                  heroku_email: "sarvesh.sp2013@gmail.com"
