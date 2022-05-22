@@ -33,10 +33,12 @@
 				headers: { "Content-Type": "application/json" },
 			});
 
-			const data = await res.data;
-			console.log(data);
+			const data = res.data;
+
 			if (data.admin) {
 				location.assign("/admin");
+			} else {
+				location.assign("/");
 			}
 		} catch (err) {
 			const data = JSON.parse(err.request.response);

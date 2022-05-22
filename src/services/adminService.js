@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const File = require("../models/fileModel");
 const userUtil = require("../utils/userUtil");
 const bcrypt = require("bcrypt");
 
@@ -62,8 +63,59 @@ const deleteToken = async (token) => {
 	};
 };
 
+const listUsers = async () => {
+	const users = await User.find();
+	if (!userUtil.check(users)) {
+		throw {
+			message: "No users found",
+		};
+	}
+
+	const userDetails = users.map((user) => {
+		const { name, email } = user;
+		return {
+			name,
+			email,
+			status: user.tokens.length !== 0 ? "Online" : "Offline",
+		};
+	});
+
+	return {
+		userDetails,
+	};
+};
+
+const listFiles = async () => {
+	const files = await File.find().populate("user", "name email tokens");
+
+	if (!userUtil.check(files)) {
+		throw {
+			message: "No files found",
+		};
+	}
+	const fileDetails = files.map((file) => {
+		const { filename, key } = file;
+		const { name, email, tokens } = file.user;
+		const status = tokens.length !== 0 ? "Online" : "Offline";
+
+		return {
+			filename,
+			key,
+			name,
+			email,
+			status,
+		};
+	});
+
+	return {
+		fileDetails,
+	};
+};
+
 module.exports = {
 	create,
 	login,
 	deleteToken,
+	listUsers,
+	listFiles,
 };

@@ -26,8 +26,11 @@ const login = async (req, res) => {
 
 		//cookie setup
 		res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+		if (admin.role !== "admin") {
+			return res.status(200).json({ admin: false });
+		}
 
-		return res.status(200).json({ admin: admin._id });
+		return res.status(200).json({ admin: true });
 	} catch (err) {
 		const errors = userUtil.handleErrors(err);
 		return res.status(400).json({ errors });
@@ -44,4 +47,24 @@ const logout = async (req, res) => {
 	}
 };
 
-module.exports = { create, login, logout };
+const fetchUsers = async (req, res) => {
+	try {
+		const { userDetails } = await adminService.listUsers();
+
+		return res.render("admin/users", { users: userDetails });
+	} catch (e) {
+		return res.status(400).json(e.message);
+	}
+};
+
+const fetchFiles = async (req, res) => {
+	try {
+		const { fileDetails } = await adminService.listFiles();
+
+		return res.render("admin/files", { files: fileDetails });
+	} catch (e) {
+		return res.status(400).json(e.message);
+	}
+};
+
+module.exports = { create, login, logout, fetchUsers, fetchFiles };

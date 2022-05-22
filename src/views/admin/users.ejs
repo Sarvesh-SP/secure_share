@@ -1,0 +1,24 @@
+<%- include('../partials/aHeader'); -%><% if(users.length !== 0) { %>
+
+<ul class="tilesWrap">
+	<ol class="gradient-list">
+		<% users.forEach(user => { %>
+		<li>
+			<div>
+				Name: <%= user.name %> <br />Email: <%= user.email %><br />Status:
+				<%= user.status %>
+			</div>
+		</li>
+		<%})%>
+	</ol>
+</ul>
+<button type="submit" class="btn blu"><a href="/admin">Go back</a></button>
+<% }else {%>
+<header>
+	<div class="headings">
+		<form>
+			<label for="fily">No Users Found yet..</label>
+		</form>
+	</div>
+</header>
+<%}%> <%- include('../partials/footer'); -%>
