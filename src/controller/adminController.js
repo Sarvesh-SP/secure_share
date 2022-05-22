@@ -1,6 +1,7 @@
 const adminService = require("../services/adminService");
 const userUtil = require("../utils/userUtil");
 const { maxAge } = require("../utils/commonUtils");
+const fs = require("fs");
 
 const create = async (req, res) => {
 	if (!req.body.password) {
@@ -82,6 +83,7 @@ const delUser = async (req, res) => {
 const delFile = async (req, res) => {
 	try {
 		const { file } = await adminService.deleteFile(req.body.key);
+		// use fs.unlink(path to the file) to delete file from uploads and encrypts directory
 
 		return res.status(204).send(file);
 	} catch (e) {
