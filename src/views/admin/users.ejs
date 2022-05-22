@@ -2,12 +2,14 @@
 
 <ul class="tilesWrap">
 	<ol class="gradient-list">
-		<% users.forEach(user => { %>
+		<% users.forEach((user) => { let uJson = JSON.stringify(user)%>
 		<li>
 			<div>
 				Name: <%= user.name %> <br />Email: <%= user.email %><br />Status:
 				<%= user.status %>
 			</div>
+			<div><button class="del" value="<%=uJson %>">Del</button></div>
+			<div class="<%= user.name%> error"></div>
 		</li>
 		<%})%>
 	</ol>
@@ -20,5 +22,50 @@
 			<label for="fily">No Users Found yet..</label>
 		</form>
 	</div>
+	<button type="submit" class="btn blu"><a href="/admin">Go back</a></button>
 </header>
 <%}%> <%- include('../partials/footer'); -%>
+<script>
+	const buttonList = document.querySelectorAll(".del");
+
+	const errorFoo = (text, name) => {
+		const errorL = document.querySelector(`.${name}.error`);
+		errorL.textContent = text;
+	};
+
+	const foo = async (e) => {
+		const { role, email, status, id, name } = await JSON.parse(
+			e.target.value
+		);
+		if (role === "admin") {
+			errorFoo("Can't delete admin", name);
+
+			setTimeout(() => {
+				location.assign("/api/admin/users");
+			}, 2000);
+		} else {
+			try {
+				const res = await axios({
+					method: "post",
+					url: "/api/admin/user/del",
+					data: JSON.stringify({ email: e.target.value }),
+					headers: { "Content-Type": "application/json" },
+				});
+
+				console.log(res);
+				location.assign("/api/admin/users");
+			} catch (err) {
+				const data = JSON.parse(err.request.response);
+				// if (data.errors) {
+				// 	emailError.textContent = data.errors.email;
+				// 	passwordError.textContent = data.errors.password;
+				// }
+				console.log(err);
+			}
+		}
+	};
+
+	for (let i = 0; i < buttonList.length; i++) {
+		buttonList[i].addEventListener("click", foo);
+	}
+</script>

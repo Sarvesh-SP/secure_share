@@ -8,6 +8,8 @@
 				<%= file.name %><br />Email: <%= file.email %><br />Status: <%=
 				file.status %>
 			</div>
+			<div><button class="del" value="<%=file.key %>">Del</button></div>
+			<div class="error"></div>
 		</li>
 		<%})%>
 	</ol>
@@ -20,5 +22,36 @@
 			<label for="fily">No Files Uploaded yet..</label>
 		</form>
 	</div>
+	<button type="submit" class="btn blu"><a href="/admin">Go back</a></button>
 </header>
 <%}%> <%- include('../partials/footer'); -%>
+<script>
+	const buttonList = document.querySelectorAll(".del");
+
+	const foo = async (e) => {
+		console.log(e.target.value);
+
+		try {
+			const res = await axios({
+				method: "post",
+				url: "/api/admin/file/del",
+				data: JSON.stringify({ key: e.target.value }),
+				headers: { "Content-Type": "application/json" },
+			});
+
+			console.log(res);
+			location.assign("/api/admin/files");
+		} catch (err) {
+			const data = JSON.parse(err.request.response);
+			// if (data.errors) {
+			// 	emailError.textContent = data.errors.email;
+			// 	passwordError.textContent = data.errors.password;
+			// }
+			console.log(err);
+		}
+	};
+
+	for (let i = 0; i < buttonList.length; i++) {
+		buttonList[i].addEventListener("click", foo);
+	}
+</script>

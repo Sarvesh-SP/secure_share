@@ -72,6 +72,9 @@ nav li a {
 .blu {
 	background: #39aea9;
 }
+.del:hover {
+	cursor: pointer;
+}
 
 .grn {
 	background: #95cd41;
