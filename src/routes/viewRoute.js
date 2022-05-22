@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { verifyAdminToken } = require("../middleware/auth");
 
 const { verifyToken } = require("../middleware/auth");
 const router = Router();
@@ -23,11 +24,10 @@ router.get("/file", (req, res) => res.render("mediator"));
 
 //Admin routes
 
-router.get("/admin", (req, res) => res.render("admin/me"));
+router.get("/admin", verifyAdminToken, (req, res) => res.render("admin/me"));
 router.get("/admin/create", (req, res) => res.render("admin/signup"));
 router.get("/admin/login", (req, res) => res.render("admin/login"));
-//	router.get("/admin/me", main screen after login)
-//	router.get("/admin/users", list of users)
-//	router.get("/admin/files", list of files)
+// router.get("/admin/users", (req, res) => res.render("admin/users"));
+// router.get("/admin/files", (req, res) => res.render("admin/files"));
 
 module.exports = router;
