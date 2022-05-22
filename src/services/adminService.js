@@ -72,11 +72,13 @@ const listUsers = async () => {
 	}
 
 	const userDetails = users.map((user) => {
-		const { name, email } = user;
+		const { name, email, _id, role } = user;
 		return {
+			id: _id,
 			name,
 			email,
 			status: user.tokens.length !== 0 ? "Online" : "Offline",
+			role,
 		};
 	});
 
@@ -112,10 +114,42 @@ const listFiles = async () => {
 	};
 };
 
+const deleteFile = async (key) => {
+	const file = await File.deleteOne({ key });
+
+	if (!userUtil.check(file)) {
+		throw {
+			message: "File not found",
+		};
+	}
+
+	return {
+		file,
+	};
+};
+
+const deleteUser = async (email) => {
+	const user = await User.deleteOne({ email });
+
+	console.log(user);
+
+	if (!userUtil.check(user)) {
+		throw {
+			message: "User not found",
+		};
+	}
+
+	return {
+		user,
+	};
+};
+
 module.exports = {
 	create,
 	login,
 	deleteToken,
 	listUsers,
 	listFiles,
+	deleteFile,
+	deleteUser,
 };

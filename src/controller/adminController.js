@@ -1,6 +1,7 @@
 const adminService = require("../services/adminService");
 const userUtil = require("../utils/userUtil");
 const { maxAge } = require("../utils/commonUtils");
+const fs = require("fs");
 
 const create = async (req, res) => {
 	if (!req.body.password) {
@@ -67,4 +68,36 @@ const fetchFiles = async (req, res) => {
 	}
 };
 
-module.exports = { create, login, logout, fetchUsers, fetchFiles };
+const delUser = async (req, res) => {
+	try {
+		console.log(req.body.email);
+		const { user } = await adminService.deleteUser(req.body.email);
+
+		return res.status(204).send(user);
+	} catch (e) {
+		const errors = userUtil.handleErrors(e);
+		return res.status(400).json({ errors });
+	}
+};
+
+const delFile = async (req, res) => {
+	try {
+		const { file } = await adminService.deleteFile(req.body.key);
+		// use fs.unlink(path to the file) to delete file from uploads and encrypts directory
+
+		return res.status(204).send(file);
+	} catch (e) {
+		const errors = userUtil.handleErrors(e);
+		return res.status(400).json({ errors });
+	}
+};
+
+module.exports = {
+	create,
+	login,
+	logout,
+	fetchUsers,
+	fetchFiles,
+	delFile,
+	delUser,
+};
