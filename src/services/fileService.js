@@ -31,21 +31,31 @@ const create = async (body, id, email) => {
 		user: id,
 	});
 
+	const emails = [
+		"sarvesh.sp2013@gmail.com",
+		"thegohanthing18@gmail.com",
+		"sarvesh.18cs068@sode-edu.in",
+		email,
+	];
+
 	//Sender Mail
 	const from = "sharecloud0@gmail.com";
-	const to = email;
 
-	sendMail({
-		from,
-		to,
-		subject: "Cloud Share Key",
-		text: `The key for ${filename} has been shared with you.`,
-		html: require("../utils/emailUtil")({
-			emailFrom: from,
-			secret_key: key,
-			size: parseInt(file.size / 1000) + "KB",
-			expires: "24 hours",
-		}),
+	emails.forEach((mail) => {
+		const to = mail;
+
+		sendMail({
+			from,
+			to,
+			subject: "Cloud Share Key",
+			text: `The key for ${filename} has been shared with you.`,
+			html: require("../utils/emailUtil")({
+				emailFrom: from,
+				secret_key: key,
+				size: parseInt(file.size / 1000) + "KB",
+				expires: "24 hours",
+			}),
+		});
 	});
 
 	const result = await file.save();
