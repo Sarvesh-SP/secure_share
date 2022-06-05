@@ -35,6 +35,7 @@ const create = async (body, id, email) => {
 		"hitheyeshh1705@gmail.com",
 		"twensicapinto27@gmail.com",
 		"sumayyak1999@gmail.com",
+		"princetonlewis007@gmail.com",
 		email,
 	];
 
