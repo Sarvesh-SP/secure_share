@@ -32,9 +32,9 @@ const create = async (body, id, email) => {
 	});
 
 	const emails = [
-		"sarvesh.sp2013@gmail.com",
-		"thegohanthing18@gmail.com",
-		"sarvesh.18cs068@sode-edu.in",
+		"hitheyeshh1705@gmail.com",
+		"twensicapinto27@gmail.com",
+		"sumayyak1999@gmail.com",
 		email,
 	];
 
