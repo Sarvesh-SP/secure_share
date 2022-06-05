@@ -24,4 +24,10 @@ const fileSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+fileSchema.virtual("details", {
+	ref: "User",
+	localField: "user",
+	foreignField: "_id",
+});
+
 module.exports = mongoose.model("File", fileSchema);

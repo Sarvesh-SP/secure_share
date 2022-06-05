@@ -72,5 +72,27 @@ const checkUser = (req, res, next) => {
 		next();
 	}
 };
+const verifyAdminToken = (req, res, next) => {
+	const token = req.cookies.jwt;
 
-module.exports = { verifyToken, checkUser };
+	if (token) {
+		jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+			if (err) {
+				console.log(err.message);
+				res.redirect("/login");
+			} else {
+				console.log(decode);
+				if (decode.role !== "admin") {
+					res.cookie("jwt", "", { maxAge: 1 });
+					return res.redirect("/login");
+				}
+				next();
+			}
+		});
+	} else {
+		res.cookie("jwt", "", { maxAge: 1 });
+		return res.redirect("/admin/login");
+	}
+};
+
+module.exports = { verifyToken, checkUser, verifyAdminToken };

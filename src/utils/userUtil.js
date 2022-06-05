@@ -13,7 +13,15 @@ const linkGen = (id) => {
 const handleErrors = (err) => {
 	console.log(err.message, err.code);
 
-	let errors = { email: "", password: "" };
+	let errors = { email: "", password: "", common: "" };
+
+	if (err.message === "User not found") {
+		errors.common = "User not found";
+	}
+
+	if (err.message === "File not found") {
+		errors.common = "File not found";
+	}
 
 	//incorrect email
 	if (err.message === "Incorrect email") {
