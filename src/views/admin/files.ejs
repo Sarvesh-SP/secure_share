@@ -4,9 +4,8 @@
 		<% files.forEach( file => { %>
 		<li>
 			<div>
-				Name: <%= file.filename %> <br />Key: <%= file.key %><br />Name:
-				<%= file.name %><br />Email: <%= file.email %><br />Status: <%=
-				file.status %>
+				Name: <%= file.filename %> <br />Name: <%= file.name %><br />Email:
+				<%= file.email %><br />Status: <%= file.status %>
 			</div>
 			<div><button class="del" value="<%=file.key %>">Del</button></div>
 			<div class="error"></div>
