@@ -89,6 +89,7 @@ const listUsers = async () => {
 
 const listFiles = async () => {
 	const files = await File.find().populate("user", "name email tokens");
+	console.log(files);
 
 	if (!userUtil.check(files)) {
 		throw {
@@ -97,16 +98,33 @@ const listFiles = async () => {
 	}
 	const fileDetails = files.map((file) => {
 		const { filename, key } = file;
-		const { name, email, tokens } = file.user;
-		const status = tokens.length !== 0 ? "Online" : "Offline";
+		if (file.user) {
+			const { name, email, tokens } = file.user;
 
-		return {
-			filename,
-			key,
-			name,
-			email,
-			status,
-		};
+			const status = tokens.length !== 0 ? "Online" : "Offline";
+
+			return {
+				filename,
+				key,
+				name,
+				email,
+				status,
+			};
+		} else {
+			const name = "Unknown";
+			const email = "Unknown";
+			const tokens = [];
+
+			const status = tokens.length !== 0 ? "Online" : "Offline";
+
+			return {
+				filename,
+				key,
+				name,
+				email,
+				status,
+			};
+		}
 	});
 
 	return {
@@ -129,9 +147,11 @@ const deleteFile = async (key) => {
 };
 
 const deleteUser = async (email) => {
-	const user = await User.deleteOne({ email });
+	const u1 = JSON.parse(email);
+	console.log(u1);
+	const user = await User.deleteOne({ email: u1.email });
 
-	console.log(user);
+	// console.log(user);
 
 	if (!userUtil.check(user)) {
 		throw {
