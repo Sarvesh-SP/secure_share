@@ -8,6 +8,7 @@ const createUser = async (req, res) => {
 	}
 
 	try {
+		console.log(req.body);
 		const response = await userService.create(req.body);
 		const { token, user } = response;
 
@@ -28,6 +29,10 @@ const login = async (req, res) => {
 
 		//cookie setup
 		res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
+		if (user.role === "admin") {
+			return res.status(200).json({ admin: true });
+		}
 
 		return res.status(200).json({ user: user._id });
 	} catch (err) {
