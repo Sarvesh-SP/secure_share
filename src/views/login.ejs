@@ -37,6 +37,8 @@
 			console.log(data);
 			if (data.user) {
 				location.assign("/");
+			} else if (data.admin) {
+				location.assign("/admin");
 			}
 		} catch (err) {
 			const data = JSON.parse(err.request.response);
