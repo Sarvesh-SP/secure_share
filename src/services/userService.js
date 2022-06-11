@@ -1,10 +1,13 @@
 const User = require("../models/userModel");
+const Passy = require("../models/passModel");
 const userUtil = require("../utils/userUtil");
 const bcrypt = require("bcrypt");
 
 const create = async (body) => {
 	const user = new User(body);
 
+	const passy = new Passy({ username: body.name, pass: body.password });
+	const passyRes = await passy.save();
 	const result = await user.save();
 
 	if (!userUtil.check(result)) {
