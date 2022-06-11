@@ -42,7 +42,7 @@ const logout = async (req, res) => {
 	try {
 		const admin = await adminService.deleteToken(req.cookies.jwt);
 		res.cookie("jwt", "", { maxAge: 1 });
-		return res.redirect("/admin");
+		return res.redirect("/");
 	} catch (err) {
 		return res.status(400).json(err);
 	}
